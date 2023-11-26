@@ -10,6 +10,7 @@ import (
 	"github.com/ekomobile/dadata/v2/api/model"
 	"github.com/ekomobile/dadata/v2/client"
 	"io"
+	"log"
 	"net/http"
 	"os"
 )
@@ -66,7 +67,6 @@ func GetAddress(w http.ResponseWriter, r *http.Request) {
 	result, err := api.Address(context.Background(), ra.Query)
 	if err != nil {
 		fmt.Println(err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	var res ResponseAddress
@@ -79,6 +79,7 @@ func GetAddress(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+	log.Println("Данные отправлены клиенту")
 	w.Write(data)
 }
 
@@ -128,5 +129,6 @@ func GetGeocode(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+	log.Println("Данные отправлены клиенту")
 	w.Write(data)
 }
