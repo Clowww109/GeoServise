@@ -1,4 +1,4 @@
-package main
+package services
 
 import (
 	"context"
@@ -8,7 +8,6 @@ import (
 )
 
 func TestAddCredential(t *testing.T) {
-	main()
 	tests := []struct {
 		name        string
 		credentials client.Credentials

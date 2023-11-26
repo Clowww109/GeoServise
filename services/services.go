@@ -1,14 +1,14 @@
-package service
+package services
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/ekomobile/dadata/v2"
 	"github.com/ekomobile/dadata/v2/api/clean"
 	"github.com/ekomobile/dadata/v2/api/model"
 	"github.com/ekomobile/dadata/v2/client"
-	httpSwagger "github.com/swaggo/http-swagger"
 	"io"
 	"net/http"
 	"os"
@@ -43,7 +43,7 @@ func NewWorkApi() *clean.Api {
 	return dadata.NewCleanApi(AddCredential(NewClientCredentials()))
 }
 
-// @Summary GetAddress
+// @Summary getAddress
 // @Tags address
 // @Description return address from geo
 // @Accept json
@@ -52,7 +52,7 @@ func NewWorkApi() *clean.Api {
 // @Success 200
 // @Failure 400 "Неверный формат запроса"
 // @Failure 500 "Cервис https://dadata.ru не доступен"
-
+// @Router /api/address/search [post]
 func GetAddress(w http.ResponseWriter, r *http.Request) {
 	var ra RequestAddressSearch
 	data, err := io.ReadAll(r.Body)
@@ -82,7 +82,7 @@ func GetAddress(w http.ResponseWriter, r *http.Request) {
 	w.Write(data)
 }
 
-// @Summary GetGeocode
+// @Summary getGeocode
 // @Tags geocode
 // @Description return closest address to point
 // @Accept json
@@ -91,7 +91,7 @@ func GetAddress(w http.ResponseWriter, r *http.Request) {
 // @Success 200
 // @Failure 400 "Неверный формат запроса"
 // @Failure 500 "Cервис https://dadata.ru не доступен"
-
+// @Router /api/address/geocode [post]
 func GetGeocode(w http.ResponseWriter, r *http.Request) {
 
 	data, err := io.ReadAll(r.Body)
@@ -129,10 +129,4 @@ func GetGeocode(w http.ResponseWriter, r *http.Request) {
 		os.Exit(1)
 	}
 	w.Write(data)
-}
-
-func HandleSwagger(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	fmt.Println("Просматривается swagger")
-	httpSwagger.URL("http://localhost:8080/swagger/doc.json")
 }
